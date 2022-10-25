@@ -80,7 +80,7 @@ End
 )
 as  
 begin  
-   SELECT Id,EmployeeId,Name,Dob,Gender,Address,Department,Designation,DateOfJoining,PhoneNo,[Password],Email,Deleted,Admin FROM Users WHERE Id=@Id AND Deleted=0
+   SELECT Id,EmployeeId,Name,Dob,Gender,Address,Department,Designation,DateOfJoining,PhoneNo,[Password],Email,Deleted,Admin FROM Users WHERE Id=@Id 
 End
 
 
