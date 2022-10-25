@@ -1,0 +1,107 @@
+﻿@model Hospital_Appointment.Models.User
+
+@{
+    ViewBag.Title = "Dasboard";
+}
+
+
+
+<div class="container text-center">
+    <h2>Dasboard</h2>
+    <div class="container-fluid">
+        <div class="jumbotron">
+
+            <h1><span class="glyphicon glyphicon-user" style="color:green"></span>Welcome @Model.Name</h1>
+            <p>
+                <a class="btn btn-success" href="/User/Edit/@Model.Id">Edit Profile</a>
+            </p>
+        </div>
+
+    </div>
+    <div class="row content">
+        <div class="col-sm-10 text-left">
+            <div id='calendar'></div>
+        </div>
+        <div class="col-sm-2 sidenav">
+            <div class="well">
+                <p>
+                    @Html.ActionLink("Patients Records", "Index", "Patient", null, new { @class = "btn btn-info" })
+                </p>
+            </div>
+            @if (User.IsInRole("Admin"))
+            {
+            <div class="well">
+                <p>@Html.ActionLink("OUR Employees", "Index", "User", null, new { @class = "btn btn-info" })</p>
+            </div>
+            }
+            <div class="well">
+                <p>@Html.ActionLink("All Appointments", "Index", "Appointment", null, new { @class = "btn btn-info" })</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        var events = [];
+        $.ajax({
+            type: "GET",
+            url: "/Appointment/GetEvents",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    events.push({
+                        title: v.AppointmentId,
+                        description: v.Description,
+                        start: moment(v.startDate),
+                        end: v.EndDate != null ? moment(v.EndDate) : null,
+                        allDay: false
+                    });
+                })
+
+                GenerateCalender(events);
+                console.log(events)
+            },
+            error: function (error) {
+                alert('failed');
+            }
+        })
+            $('#exampleModal').modal('show');
+        function GenerateCalender(events) {
+            $('#calender').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+
+                defaultView: 'month',
+                selectable: false,
+                
+                firstDay: 1, //The day that each week begins (Monday=1)
+                slotMinutes: 30,
+
+                
+                events: events,
+                     @*'@Url.RouteUrl(new{ action="GetEvents", controller="Home"})'*@
+                eventClick: function (calEvent, jsEvent, view) {
+                    console.log(calEvent.title);
+                }
+            });
+        }
+            $("#calender").click(function () {
+                $('#exampleModal').modal('show');
+            });
+    });
+    </script>
+}

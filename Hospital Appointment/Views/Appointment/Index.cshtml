@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="container">
+    <h1 style="margin-top:100px;">ALL Appointments </h1>
+    <h5 class="display-6">Patient Records</h5>
+    <p>
+        <a class="btn btn-success" href="/Patient/Index/">New Appointment</a>
+    </p>
+    @if (TempData["error"] != null)
+    {
+        @Html.Raw(TempData["error"]);
+    }
+    @if (TempData["msg"] != null)
+    {
+        @Html.Raw(TempData["msg"]);
+    }
+    <div>
+
+        <table id="myTable" class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Appointment Id</th>
+                    <th>Patient Name</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                    <th>Address</th>
+                    <th>PhoneNo</th>
+                    <th>Doctors name</th>
+                    <th>Description</th>
+                    <th></th>
+
+
+                </tr>
+
+            </thead>
+
+        </table>
+
+    </div>
+
+    <div class="row container">
+
+        <div style="margin-top:20px" class="col-sm-6">
+            @Html.ActionLink("Back to Patient list", "Index", "Patient")
+        </div>
+        <div style="margin-top:20px" class="col-sm-6">
+            @Html.ActionLink("Back to Dashboard", "Dasboard", "Home")
+        </div>
+    </div>
+</div>
+
+<link href="https://cdn.datatables.net/1.10.21/css/dataTables.semanticui.min.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet">
+
+
+
+
+
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.semanticui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#myTable').DataTable(
+
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+
+                        "url": "/Appointment/AppointmentData",
+                        "type": "POST",
+                        "datatype": "json"
+
+                    },
+                    'columnDefs': [{
+
+                        'targets': [1, 4, 5, 6, 7, 8], /* column index */
+
+                        'orderable': false, /* true or false */
+                    }],
+
+                    "columns": [
+
+                        { "data": "AppointmentId" },
+
+                        { "data": "PatientName" },
+
+                        {
+                            "data": "startDate"
+                        },
+
+
+                        { "data": "EndDate" },
+                        { "data": "Address" },
+
+                        { "data": "PhoneNo" },
+                        { "data": "DoctorName" },
+                        { "data": "Description" },
+
+                        {
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                const date = new Date(full.EndDate);
+                                if (date > new Date()) {
+                                    return ('<a class="btn btn-info" href="/Appointment/Edit/' + full.Id + '"><span class="glyphicon glyphicon-edit"></span></a> || <a class="btn btn-danger" href="/Appointment/Delete/' + full.Id + '"><span class="glyphicon glyphicon-trash"></span></a>');
+
+                                }
+                                else {
+                                    return ('<a class="btn btn-info" href="/Appointment/Edit/' + full.Id + '"><span class="glyphicon glyphicon-edit"></span></a')
+                                }
+                                
+                          }
+
+                        }]
+
+
+                }
+            );
+
+        });
+
+    </script>
+
+    
+}

@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="container">
+    <h1 style="margin-top:100px;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif">ABC Hospital</h1>
+    <h5 class="display-6">Patient Records</h5>
+    <p>
+        <a class="btn btn-success" href="/Patient/Create/">Add New Patient</a>
+    </p>
+    @if (TempData["error"] != null)
+    {
+        @Html.Raw(TempData["error"]);
+    }
+    @if (TempData["msg"] != null)
+    {
+        @Html.Raw(TempData["msg"]);
+    }
+    <div>
+
+        <table id="myTable" class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Patient Id</th>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>PhoneNo</th>
+                    <th>Email</th>
+                    <th></th>
+
+
+                </tr>
+
+            </thead>
+
+        </table>
+
+    </div>
+    <div class="row container">
+
+        <div style="margin-top:20px" class="col-sm-6">
+            @Html.ActionLink("Back to Appointment list", "Index", "Appointment")
+        </div>
+        <div style="margin-top:20px" class="col-sm-6">
+            @Html.ActionLink("Back to Dashboard", "Dasboard", "Home")
+        </div>
+    </div>
+</div>
+
+<link href="https://cdn.datatables.net/1.10.21/css/dataTables.semanticui.min.css" rel="stylesheet">
+<link href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css" rel="stylesheet">
+
+
+
+
+
+@section scripts{
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.semanticui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#myTable').DataTable(
+
+                {
+                    "processing": true,
+                    "serverSide": true,
+                    "filter": true,
+                    "ajax": {
+
+                        "url": "/Patient/PatientsData",
+                        "type": "POST",
+                        "datatype": "json"
+
+                    },
+                    'columnDefs': [{
+
+                        'targets': [2, 3,7], /* column index */
+
+                        'orderable': false, /* true or false */
+                    }],
+
+                    "columns": [
+
+                        { "data": "PatientId" },
+
+                        { "data": "Name" },
+
+                        {
+                            "data": "Dob",
+                            "render": function (value) {
+                                if (value === null) return "";
+                                var pattern = /Date\(([^)]+)\)/;//date format from server side
+                                var results = pattern.exec(value);
+                                var dt = new Date(parseFloat(results[1]));
+
+                                return dt.getDate() + "." + (dt.getMonth() + 1) + "." + dt.getFullYear();
+                            }, "autoWidth": true
+
+                        },
+
+                        { "data": "Gender" },
+                        { "data": "Address" },
+
+                        { "data": "PhoneNo" },
+                        { "data": "Email" },
+
+                        {
+                            "data": null,
+                            "render": function (data, type, full, meta) {
+                                return ('<a class="btn btn-info" href="/Patient/Edit/' + full.Id + '"><span class="glyphicon glyphicon-edit"></span></a> || <a class="btn btn-danger" href="/Patient/Delete/' + full.Id + '"><span class="glyphicon glyphicon-trash"></span></a>|| <a class="btn btn-danger" href="/Appointment/Create/' + full.Id + '">New Appointment</a>');
+                            }
+
+                        }
+                    ]
+
+                });
+
+        });
+
+    </script>
+}
+

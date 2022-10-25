@@ -1,0 +1,229 @@
+﻿@model Hospital_Appointment.Models.Appointment
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Appointment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        @Html.HiddenFor(model => model.AppointmentId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PatientId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PatientId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.PatientId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PatientName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PatientName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.PatientName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <button id="calender" type="button" class="btn btn-success">Choose Slot</button>
+                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" , @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DoctorName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DoctorName, Model.Doctors, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DoctorName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" } )
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Attented, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Attented)
+                    @Html.ValidationMessageFor(model => model.Attented, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.PhoneNo)
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.DoctorId)
+        </div>
+
+        <div class="form-group">
+            @Html.HiddenFor(m => m.CreatedBy)
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+
+    <div style="margin-top:20px" class="col-sm-6">
+        @Html.ActionLink("Back to Appointment list", "Index", "Appointment")
+    </div>
+    <div style="margin-top:20px" class="col-sm-6">
+        @Html.ActionLink("Back to Dashboard", "Dasboard", "Home")
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+        var events = [];
+        $.ajax({
+            type: "GET",
+            url: "/Appointment/GetEvents",
+            success: function (data) {
+                $.each(data, function (i, v) {
+                    events.push({
+                        title: v.AppointmentId,
+                        description: v.Description,
+                        start: moment(v.startDate),
+                        end: v.EndDate != null ? moment(v.EndDate) : null,
+                        allDay: false
+                    });
+                })
+
+                GenerateCalender(events);
+                
+                console.log(events)
+            },
+            error: function (error) {
+                alert('failed');
+            }
+        })
+        $('#exampleModal').modal('show');
+        function GenerateCalender(events) {
+            $('#calender').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+
+                defaultView: 'agendaWeek',
+                selectable: true,
+                minTime: "09:00:00",
+                maxTime: "17:00:00",
+                selectAllow: function (select) {
+                    return moment().diff(select.start, 'minute') <= 0
+                },
+                firstDay: 1, //The day that each week begins (Monday=1)
+                slotMinutes: 30,
+
+                select: function (start, end, jsEvent, view) {
+                    // start contains the date you have selected
+                    // end contains the end date.
+                    // Caution: the end date is exclusive (new since v2).
+                    var allDay = !start.hasTime() && !end.hasTime();
+                    $('#exampleModal').modal('hide');
+                    $('#startDate').val(moment(start).format());
+                    $('#EndDate').val(moment(end).format());
+
+                },
+                events: events,
+                     @*'@Url.RouteUrl(new{ action="GetEvents", controller="Home"})'*@
+                eventClick: function (calEvent, jsEvent, view) {
+                    console.log(calEvent.title);
+                }
+            });
+        }
+            $("#calender").click(function () {
+                $('#exampleModal').modal('show');
+            });
+    });
+    </script>
+}
+
+<div id="exampleModal" class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" style="text-align: center; font-size: 55px"><i class='fa fa-user-circle'></i></h5>
+
+            </div>
+            <div class="modal-body popup1" id="FormDetails">
+
+                <div id='calendar'></div>
+
+
+            </div>
+            <div class="modal-footer">
+                <p>Please Select your Slot</p>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

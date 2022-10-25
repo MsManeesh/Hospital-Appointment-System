@@ -1,0 +1,61 @@
+﻿<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.css">
+
+<style type="text/css">
+
+    .field-validation-error {
+        color: #ff0000;
+    }
+</style>
+<div class="container">
+    <div id='calendar'></div>
+</div>
+
+<!-- JS includes -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/mvc/4.0/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.1/fullcalendar.min.js"></script>
+
+<script type="text/javascript">
+
+			$(document).ready(function () {
+				$('#calendar').fullCalendar({
+        			header: {
+                        left: 'prev,next today',
+            			center: 'title',
+            			right: 'month,agendaWeek,agendaDay'
+                    },
+
+                    defaultView: 'agendaWeek',
+                    selectable: true,
+                    selectAllow: function (select) {
+                        return moment().diff(select.start, 'days') <= 0
+                    },
+            		firstDay: 1, //The day that each week begins (Monday=1)
+                    slotMinutes: 30,
+
+                    select: function (start, end, jsEvent, view) {
+                        // start contains the date you have selected
+                        // end contains the end date.
+                        // Caution: the end date is exclusive (new since v2).
+                        var allDay = !start.hasTime() && !end.hasTime();
+                        $('#exampleModal').modal('show');
+                        alert(["Event Start date: " + moment(start).format(),
+                        "Event End date: " + moment(end).format(),
+                        "AllDay: " + allDay].join("\n"));
+                    },
+                    events: [
+                        {
+                            id: 'a',
+                            title: 'my event',
+                            start: '2022-10-25T10:30:00'
+                        }
+                    ] @*'@Url.RouteUrl(new{ action="GetEvents", controller="Home"})'*@
+        		});
+    		});
+</script>
+
