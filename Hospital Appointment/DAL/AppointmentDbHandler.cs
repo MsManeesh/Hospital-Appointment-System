@@ -210,7 +210,7 @@ namespace Hospital_Appointment.DAL
             cmd.Parameters.AddWithValue("@DoctorId", appointment.DoctorId);
             cmd.Parameters.AddWithValue("@Description", appointment.Description);
             cmd.Parameters.AddWithValue("@CreatedBy", appointment.CreatedBy);
-            cmd.Parameters.AddWithValue("@Attented", 0);
+            cmd.Parameters.AddWithValue("@Attented", appointment.Attented);
 
             connectionManage();
             int i = cmd.ExecuteNonQuery();

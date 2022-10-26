@@ -37,6 +37,7 @@ namespace Hospital_Appointment.Controllers
             }
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Patient patient)
         {
 
@@ -83,6 +84,7 @@ namespace Hospital_Appointment.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Patient patient)
         {
             try
@@ -126,6 +128,7 @@ namespace Hospital_Appointment.Controllers
         // POST: Patient/Delete/5
        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Patient patient)
         {
             try

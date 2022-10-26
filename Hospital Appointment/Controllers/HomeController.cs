@@ -25,14 +25,22 @@ namespace Hospital_Appointment.Controllers
         [Authorize]
         public ActionResult Dasboard()
         {
-            User user=new User();
-            user = userDb.GetSingleUserDetails(HttpContext.User.Identity.Name);
-            return View(user);
+            try
+            {
+                User user = new User();
+                user = userDb.GetSingleUserDetails(HttpContext.User.Identity.Name);
+                return View(user);
+            }catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message + " " + ex.StackTrace);
+                return View();
+            }
         }
         [HttpPost]
         public ActionResult Index(Login login)
         {
             try {
+                FormsAuthentication.SignOut();
                 if (ModelState.IsValid)
                 {
                     User user = userDb.GetSingleUserDetails(login.Email);

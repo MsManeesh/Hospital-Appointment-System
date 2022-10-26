@@ -38,7 +38,7 @@
             @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <button id="calender" type="button" class="btn btn-success">Choose Slot</button>
-                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" , @readonly = "readonly" } })
+                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -78,7 +78,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" } )
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -125,6 +125,12 @@
 
 
 @section Scripts{
+   
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/Scripts/jquery.validate.min.js")
+        @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
+
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
@@ -147,12 +153,13 @@
                         description: v.Description,
                         start: moment(v.startDate),
                         end: v.EndDate != null ? moment(v.EndDate) : null,
-                        allDay: false
+                        allDay: false,
+                        color: 'red'
                     });
                 })
 
                 GenerateCalender(events);
-                
+
                 console.log(events)
             },
             error: function (error) {
@@ -160,6 +167,7 @@
             }
         })
         $('#exampleModal').modal('show');
+
         function GenerateCalender(events) {
             $('#calender').fullCalendar('destroy');
             $('#calendar').fullCalendar({

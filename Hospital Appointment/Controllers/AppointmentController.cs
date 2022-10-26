@@ -41,10 +41,12 @@ namespace Hospital_Appointment.Controllers
             }
             catch (Exception ex)
             {
-                return View(ex);
+                ModelState.AddModelError("", ex.Message);
+                return View();
             }
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(int id, Appointment appointment)
         {
 
@@ -128,21 +130,31 @@ namespace Hospital_Appointment.Controllers
 
         public ActionResult Edit(int id)
         {
-
-            Appointment appointment = appointmentDb.GetAppointment(id);
-            if (appointment != null)
+            try
             {
-                Patient patientcurrent = patientDb.GetPatient(appointment.patientNo);
-                appointment.PatientId = patientcurrent.PatientId;
-                appointment.PatientName = patientcurrent.Name;
+                Appointment appointment = new Appointment();
+                appointment = appointmentDb.GetAppointment(id);
                 appointment.Doctors = new SelectList(getdropdown(), "Value", "Text");
-                return View(appointment);
-            }
+                if (appointment != null)
+                {
+                    Patient patientcurrent = patientDb.GetPatient(appointment.patientNo);
+                    appointment.PatientId = patientcurrent.PatientId;
+                    appointment.PatientName = patientcurrent.Name;
+                    
+                    return View(appointment);
+                }
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message + " " + ex.StackTrace);
+                return View();
+            }
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Appointment appointment)
         {
             try
@@ -193,6 +205,7 @@ namespace Hospital_Appointment.Controllers
         // POST: Patient/Delete/5
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Appointment appointment)
         {
             try
