@@ -357,7 +357,7 @@ namespace Hospital_Appointment.DAL
         public bool UpdatePassword(string password, int Id)
         {
             connection();
-            SqlCommand cmd = new SqlCommand("AddResetPasswordCode", con);
+            SqlCommand cmd = new SqlCommand("UpdatePassword", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.CommandType = CommandType.StoredProcedure;

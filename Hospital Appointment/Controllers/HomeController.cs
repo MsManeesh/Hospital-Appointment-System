@@ -160,7 +160,7 @@ namespace Hospital_Appointment.Controllers
             else if (emailFor == "ResetPassword")
             {
                 subject = "Reset Password";
-                body = "Hi,<br/>br/>We got request for reset your account password. Please click on the below link to reset your password" +
+                body = "Hi,<br/>We got request for reset your account password. Please click on the below link to reset your password" +
                     "<br/><br/><a href=" + link + ">Reset Password link</a>";
             }
 
@@ -215,10 +215,12 @@ namespace Hospital_Appointment.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPasswordModel model)
         {
-            var message = "";
-            if (ModelState.IsValid)
+            try
             {
-               
+                var message = "";
+                if (ModelState.IsValid)
+                {
+
                     var user = userDb.GetUsersByResetPasswordCode(model.ResetCode);
                     if (user != null)
                     {
@@ -226,19 +228,28 @@ namespace Hospital_Appointment.Controllers
                         {
                             if (userDb.AddResetPasswordCode("", user.Id))
                             {
-                            message = "New password updated successfully";
+                                message = "New password updated successfully";
+                                return RedirectToAction("Index");
                             }
                         }
-                      
+
                     }
-                
-            }
-            else
+
+                }
+                else
+                {
+                    message = "Something invalid";
+                    
+                }
+                ViewBag.Message = message;
+                return View(model);
+
+            }catch (Exception ex)
             {
-                message = "Something invalid";
+                ViewBag.Message =ex.Message;
+                return View(model);
             }
-            ViewBag.Message = message;
-            return View(model);
+            
         }
     }
 }
