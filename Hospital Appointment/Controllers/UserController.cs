@@ -2,6 +2,7 @@
 using Hospital_Appointment.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -86,13 +87,23 @@ namespace Hospital_Appointment.Controllers
         {
             try
             {
+                if (!HttpContext.User.IsInRole("Admin"))
+                {
+                    User UserDetails = userDb.GetUser(user.Id);
+                    user.Password = UserDetails.Password;
+                    user.ConfirmPassword= UserDetails.Password;
+                    user.PhoneNo= UserDetails.PhoneNo;
+                    user.Email = UserDetails.Email;
+                    user.DateofJoining = UserDetails.DateofJoining;
+                    ModelState.Clear();
+                }
                 
-                if (ModelState.IsValid)
+                if (TryValidateModel(user))
                 {
                     if (userDb.UpdateUser(user))
                     {
                         ModelState.Clear();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Dasboard","Home");
                     }
                     ModelState.AddModelError("", "Server Error");
                 }
