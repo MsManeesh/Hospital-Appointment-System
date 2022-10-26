@@ -12,7 +12,7 @@ namespace Hospital_Appointment.Models
         public string EmployeeId { get; set; }
 
         [Required(ErrorMessage = "Name is Required")]
-        [RegularExpression("[A-Za-z ]{3,50}", ErrorMessage = "Name Not Valid")]
+        [RegularExpression("[A-Za-z .]{3,50}", ErrorMessage = "Name Not Valid")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Date of birth is Required")]

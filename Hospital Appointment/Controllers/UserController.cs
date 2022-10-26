@@ -71,7 +71,7 @@ namespace Hospital_Appointment.Controllers
             User user = userDb.GetUser(id);
             if (user != null)
             {
-                
+                user.ConfirmPassword = user.Password;
                 return View(user);
             }
                 
