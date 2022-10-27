@@ -1,4 +1,4 @@
-﻿
+
 CREATE TABLE Appointments (
 	Id int IDENTITY(1,1) PRIMARY KEY,
 	AppointmentId varchar(255),
@@ -12,7 +12,7 @@ CREATE TABLE Appointments (
 	CreatedBy int,
 	Deleted bit,
 	Attented bit,
-	ResetPasswordCode varchar(max)
+	
 );
 
 GO
@@ -31,7 +31,7 @@ CREATE TABLE Users (
 	Email varchar(255) NOT NULL,
 	[Password] varchar(255) NOT NULL,
 	Deleted bit,
-	Admin bit
+	Admin bit,ResetPasswordCode varchar(max)
 	
 );
 
@@ -46,7 +46,8 @@ CREATE TABLE Patients (
 	Address varchar(255),
 	PhoneNo varchar(255),
 	Email varchar(255),
-	Deleted bit	
+	Deleted bit	,
+	CreatedBy int
 );
 
 GO
@@ -455,7 +456,7 @@ begin
    set [Deleted]=1
    where Id=@Id  
 End 
-
+GO
 Create procedure [dbo].[DeleteAppointmentForPatients]  
 (  
    @Id int
